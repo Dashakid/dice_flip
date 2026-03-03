@@ -6,9 +6,9 @@ import time
 actions = ["Oil", "Dildo show", "Close up", "Slap/Spank", "Vibe", "Tease"]
 body_parts = ["Boobs", "Ass", "Pussy", "Feet", "Thighs", "Full body"]
 
-st.set_page_config(layout="centered", page_title="🎲 $50 Two-Die Roll")
+st.set_page_config(layout="centered", page_title="🎲 DesiWaifu Dice")
 
-# Monopoly/Mobile Style CSS
+# Monopoly/Mobile Style CSS with DesiWaifu Branding
 st.markdown("""
     <style>
     /* Hide Streamlit UI */
@@ -17,6 +17,21 @@ st.markdown("""
     
     .stApp { background-color: #fff0f6; }
     
+    /* Branding Header */
+    .brand-header {
+        text-align: center;
+        background: #d63384;
+        color: white;
+        padding: 10px;
+        border-radius: 15px;
+        font-size: 35px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        border: 4px solid #ffffff;
+    }
+
     /* Result Box */
     .result-container {
         background: linear-gradient(135deg, #ff007a, #7000ff);
@@ -41,7 +56,9 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.markdown("<h1 style='text-align: center; color: #d63384; margin-bottom: 20px;'>✨ $50 DICE GAME ✨</h1>", unsafe_allow_html=True)
+# Branded Header
+st.markdown("<div class='brand-header'>DESIWAIFU DICE GAME</div>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #d63384;'>✨ ONLY $50 TO PLAY ✨</h3>", unsafe_allow_html=True)
 
 # State Management
 if 'die1' not in st.session_state: st.session_state.die1 = None
@@ -59,7 +76,7 @@ with col1:
             placeholder.markdown(f"<div class='dice-shake'>{frame}</div>", unsafe_allow_html=True)
             time.sleep(0.06)
         st.session_state.die1 = random.randint(1, 6)
-        st.session_state.die2 = None # Clear action for new roll
+        st.session_state.die2 = None 
         st.rerun()
 
 with col2:
@@ -87,7 +104,7 @@ if st.session_state.die1 and st.session_state.die2:
     """, unsafe_allow_html=True)
     
     st.write("")
-    if st.button("♻️ RESET GAME"):
+    if st.button("♻️ RESET FOR NEXT PLAYER"):
         st.session_state.die1 = None
         st.session_state.die2 = None
         st.rerun()
@@ -100,4 +117,3 @@ elif st.session_state.die1:
             <div style='margin-top:10px; font-style: italic;'>Now Roll for Action!</div>
         </div>
     """, unsafe_allow_html=True)
-    
