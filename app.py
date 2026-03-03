@@ -1,77 +1,61 @@
 import streamlit as st
 
-# --- 1. GUI STYLING (The "Streamer" Look) ---
-st.set_page_config(layout="wide")
+# Define your grid data from the spreadsheet
+actions = ["Oil", "Dildo show", "Close up", "Slap/Spank", "Vibe", "Tease"]
+body_parts = ["Boobs", "Ass", "Pussy", "Feet", "Thighs", "Full body"]
 
+st.set_page_config(layout="wide", page_title="Dice Game Reveal")
+
+# Custom CSS for a "Premium" look
 st.markdown("""
     <style>
-    /* Dark background for the whole app */
-    .stApp { background-color: #0e1117; }
-    
-    /* Style for the Tile Buttons */
-    div.stButton > button {
-        height: 100px;
+    .stButton>button {
         width: 100%;
-        background-color: #262730;
-        color: #FFD700; /* Gold Text */
-        border: 2px solid #FFD700;
-        border-radius: 12px;
-        font-size: 24px;
+        height: 100px;
+        font-size: 20px;
         font-weight: bold;
-        transition: transform 0.2s, background-color 0.2s;
+        border-radius: 10px;
+        background-color: #2e2e2e;
+        color: white;
     }
-    div.stButton > button:hover {
-        transform: scale(1.05);
-        background-color: #FFD700;
-        color: #000000;
-    }
-    
-    /* Style for the Revealed Prize */
-    .prize-revealed {
+    .reveal-box {
+        background-color: #28a745;
+        color: white;
         height: 100px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #00FF41; /* "Matrix" Green */
-        color: black;
-        border-radius: 12px;
+        border-radius: 10px;
         font-weight: bold;
-        font-size: 18px;
         text-align: center;
-        border: 2px solid white;
     }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("💎 $75 Scratch-Off Reveal")
+st.title("🎲 Dice Game: Reveal the Action")
 
-# --- 2. GAME LOGIC ---
-# Define 30 prizes (You can change these to whatever she wants!)
-if 'prizes' not in st.session_state:
-    prizes_list = ["Sex Tape", "Private Live", "Spanks", "Fuck Machine", "Squirt"] * 6
-    st.session_state.prizes = prizes_list
+# Initialize session state to keep track of flipped tiles
+if 'flipped_tiles' not in st.session_state:
+    st.session_state.flipped_tiles = set()
 
-# Track which cards have been clicked
-if 'flipped' not in st.session_state:
-    st.session_state.flipped = [False] * 30
+# Create the headers for Actions
+header_cols = st.columns([1] + [2]*6)
+for idx, action in enumerate(actions):
+    header_cols[idx + 1].markdown(f"### {idx+1}. {action}")
 
-# --- 3. THE GUI GRID ---
-# Create 5 rows
-for row in range(5):
-    cols = st.columns(6) # 6 columns per row = 30 tiles
-    for col in range(6):
-        index = (row * 6) + col
-        with cols[col]:
-            if st.session_state.flipped[index]:
-                # Show the prize text if clicked
-                st.markdown(f"<div class='prize-revealed'>{st.session_state.prizes[index]}</div>", unsafe_allow_html=True)
+# Create the rows for Body Parts
+for row_idx, part in enumerate(body_parts):
+    cols = st.columns([1] + [2]*6)
+    cols[0].markdown(f"### {row_idx+1}. {part}") # Row Label
+    
+    for col_idx in range(6):
+        tile_id = f"{row_idx}_{col_idx}"
+        with cols[col_idx + 1]:
+            if tile_id in st.session_state.flipped_tiles:
+                # What shows after clicking
+                st.markdown(f"<div class='reveal-box'>{actions[col_idx]}<br>{part}</div>", unsafe_allow_html=True)
             else:
-                # Show the interactive button
-                if st.button(f"#{index + 1}", key=f"tile_{index}"):
-                    st.session_state.flipped[index] = True
+                # The hidden tile
+                if st.button(f"$75", key=tile_id):
+                    st.session_state.flipped_tiles.add(tile_id)
                     st.rerun()
-
-# Secret Reset Button in the sidebar
-if st.sidebar.button("Reset All Tiles"):
-    st.session_state.flipped = [False] * 30
-    st.rerun()
