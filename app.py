@@ -49,7 +49,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.markdown("<h1 style='text-align: center; color: #d63384; margin-bottom: 50px;'>💖 🎲 DICE GAME ($75) 🎲 💖</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #d63384; margin-bottom: 50px;'>💖 🎲 DICE GAME ($50) 🎲 💖</h1>", unsafe_allow_html=True)
 
 # State for the two dice
 if 'die1' not in st.session_state: st.session_state.die1 = None
